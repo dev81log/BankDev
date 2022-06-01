@@ -1,4 +1,7 @@
-﻿namespace BankDev
+﻿using System.Globalization;
+
+
+namespace BankDev
 {
     internal static class Program
     {
@@ -6,6 +9,7 @@
         {
             Window();
             UserPassSystem();
+            AccountList();
             Menu();
         }
 
@@ -18,26 +22,37 @@
 
         private static void Menu()
         {
-            Console.WriteLine("*** Choice under one options below ***");
-            Console.WriteLine("1 - Balance");
-            Console.WriteLine("2 - Withdraw");
-            Console.WriteLine("3 - Exit Service");
-
-            var choiceInput = short.Parse(Console.ReadLine() ?? string.Empty);
-
-            switch (choiceInput)
+            while (true)
             {
-                case 1:
-                    Console.WriteLine("Balance");
-                    break;
-                case 2:
-                    Console.WriteLine("Withdraw");
-                    break;
-                case 3:
-                    Environment.Exit(0);
-                    break;
-                default:
-                    return;
+                Console.WriteLine("**************************************");
+                Console.WriteLine("*** Choice under one options below ***");
+                Console.WriteLine("1 - Balance");
+                Console.WriteLine("2 - Withdraw");
+                Console.WriteLine("3 - Exit Service");
+
+                Console.Write("Insert number above: ");
+
+                var pt = new CultureInfo("pt-BR");
+
+
+                var choiceInput = short.Parse(Console.ReadLine() ?? string.Empty);
+
+                switch (choiceInput)
+                {
+                    case 1:
+                        Console.Clear();
+                        Console.WriteLine($"You have account balance: {GetUserAccount().Amount.ToString("C", pt)}");
+                        break;
+                    case 2:
+                        Console.Clear();
+                        Console.WriteLine("Withdraw");
+                        break;
+                    case 3:
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        return;
+                }
             }
         }
 
@@ -72,7 +87,7 @@
             {
                 Id = 2233,
                 Name = "Robert",
-                Amount = 3.600f,
+                Amount = 3600f,
                 CreatedOn = DateTime.Now,
                 Status = true
             };
