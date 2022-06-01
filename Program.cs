@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using Array = System.Array;
-
-namespace BankDev
+﻿namespace BankDev
 {
     internal static class Program
     {
         private static void Main(string[] args)
         {
             Window();
+            UserPassSystem();
             Menu();
         }
 
@@ -17,16 +14,15 @@ namespace BankDev
             Console.WriteLine("**************************************");
             Console.WriteLine("*** BankDev - Electronic Terminal ****");
             Console.WriteLine("**************************************");
-            
-            AccountList();
-
-            Console.WriteLine("1 - Balance");
-            Console.WriteLine("2 - Withdraw");
-            Console.WriteLine("3 - Exit Service");
         }
 
         private static void Menu()
         {
+            Console.WriteLine("*** Choice under one options below ***");
+            Console.WriteLine("1 - Balance");
+            Console.WriteLine("2 - Withdraw");
+            Console.WriteLine("3 - Exit Service");
+
             var choiceInput = short.Parse(Console.ReadLine() ?? string.Empty);
 
             switch (choiceInput)
@@ -45,32 +41,59 @@ namespace BankDev
             }
         }
 
+        private static void UserPassSystem()
+        {
+            var contestPass = true;
+
+            while (contestPass)
+            {
+                Console.Write("Insert idUserPass: ");
+                var idUserPass = int.Parse(Console.ReadLine() ?? string.Empty);
+
+                if (idUserPass == GetUserAccount().Id)
+                {
+                    Console.WriteLine($"User pass account successful {GetUserAccount().Name}");
+                    contestPass = false;
+                }
+                else
+                {
+                    Console.WriteLine("Not user account registered");
+                }
+            }
+        }
+
         private static void Operations()
         {
         }
 
-        private static ArrayList ListUser()
+        private static UserAccount GetUserAccount()
         {
-            var accountList = new ArrayList
+            var userAccount = new UserAccount
             {
-                22,
-                "Robert",
-                true
+                Id = 2233,
+                Name = "Robert",
+                Amount = 3.600f,
+                CreatedOn = DateTime.Now,
+                Status = true
             };
-            return accountList;
+
+            return userAccount;
         }
 
         private static void AccountList()
         {
-            var client = ListUser();
-            Console.WriteLine($"Welcome {client[1]} to id {client[0]} and service {client[2]}");
-
+            var client = GetUserAccount();
+            Console.WriteLine(
+                $"Welcome {client.Name} to id {client.Id} and service {client.Status} registered {client.CreatedOn}");
         }
+    }
 
-        struct AccountListClient
-        {
-            public int ClientId { get; set; }
-            public string ClientName { get; set; }
-        }
+    internal class UserAccount
+    {
+        public int Id { get; init; }
+        public string Name { get; init; }
+        public double Amount { get; init; }
+        public DateTime CreatedOn { get; init; }
+        public bool Status { get; init; }
     }
 }
