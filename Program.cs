@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 
-
 namespace BankDev
 {
     internal static class Program
@@ -9,12 +8,13 @@ namespace BankDev
         {
             Window();
             UserPassSystem();
-            AccountList();
+            AccountWelcome();
             Menu();
         }
 
         private static void Window()
-        {
+        {   
+            Console.Clear();
             Console.WriteLine("**************************************");
             Console.WriteLine("*** BankDev - Electronic Terminal ****");
             Console.WriteLine("**************************************");
@@ -22,6 +22,8 @@ namespace BankDev
 
         private static void Menu()
         {
+            var pt = new CultureInfo("pt-BR");
+
             while (true)
             {
                 Console.WriteLine("**************************************");
@@ -32,20 +34,19 @@ namespace BankDev
 
                 Console.Write("Insert number above: ");
 
-                var pt = new CultureInfo("pt-BR");
-
-
                 var choiceInput = short.Parse(Console.ReadLine() ?? string.Empty);
 
                 switch (choiceInput)
                 {
                     case 1:
                         Console.Clear();
-                        Console.WriteLine($"You have account balance: {GetUserAccount().Amount.ToString("C", pt)}");
+                        Console.WriteLine("You have account balance: ");
+                        OperationBalance();
                         break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("Withdraw");
+                        Console.WriteLine("You withdraw amount: " + OperationWithdraw);
+                        //OperationWithdraw();
                         break;
                     case 3:
                         Environment.Exit(0);
@@ -54,6 +55,23 @@ namespace BankDev
                         return;
                 }
             }
+        }
+
+        private static void OperationWithdraw()    
+        {
+            var balance = GetUserAccount().Amount;
+            var withdraw = double.Parse(Console.ReadLine() ?? string.Empty);
+            var withdrawAmount = balance - withdraw;
+            Console.WriteLine(withdrawAmount);
+
+        }
+
+        private static void OperationBalance()
+        {
+            var balance = GetUserAccount().Amount;
+            CultureInfo? pt = null;
+            var balanceAmount = balance.ToString("C", pt);
+            Console.WriteLine(balanceAmount);
         }
 
         private static void UserPassSystem()
@@ -77,10 +95,6 @@ namespace BankDev
             }
         }
 
-        private static void Operations()
-        {
-        }
-
         private static UserAccount GetUserAccount()
         {
             var userAccount = new UserAccount
@@ -95,7 +109,7 @@ namespace BankDev
             return userAccount;
         }
 
-        private static void AccountList()
+        private static void AccountWelcome()
         {
             var client = GetUserAccount();
             Console.WriteLine(
